@@ -1,5 +1,5 @@
 import { Browser, Page } from 'playwright';
-import saveFile from './save-file';
+import { buildCarObj, cleanDetailsLinks } from './utils';
 
 async function getPageLinks(baseUrl: string, searchUrl: string, page: Page) {
   const fullUrl = baseUrl + searchUrl;
@@ -24,29 +24,7 @@ async function getDetailsLinks(page: Page, link: string) {
   return details;
 }
 
-function cleanDetailsLinks(links: string[], keywords: string[]) {
-  return links
-    .filter(link => keywords.some(keyword => link.includes(keyword)))
-    .filter((link, index, array) => array.indexOf(link) === index);
-}
-
 async function getCarInfo(page: Page, carUrl: string) {
-  const info = {
-    brand: '',
-    model: '',
-    price: 0,
-    km: 0,
-    year: 0,
-    status: '',
-    city: '',
-    licensePlate: 0,
-    transmission: '',
-    fuel: '',
-    cylinderCapacity: 0,
-    color: '',
-    link: carUrl,
-  };
-
   await page.goto(carUrl, { waitUntil: 'networkidle' });
 
   const [brand] = await page.$$('h1.title');
@@ -60,28 +38,22 @@ async function getCarInfo(page: Page, carUrl: string) {
     fuel, cylinderCapacity, color,
   ] = await page.$$('h4.description');
 
-  info.brand = await brand.textContent() ?? '';
-  info.model = await model.textContent() ?? '';
-  info.price = +(await price.textContent() ?? '')
-    .replace('$', '')
-    .replaceAll('.', '')
-    .trim();
-  info.km = +(await km.textContent() ?? '')
-    .replace('km', '')
-    .replaceAll('.', '')
-    .trim();
-  info.year = +(await year.textContent() ?? '0');
-  info.status = await status.textContent() ?? '';
-  info.city = await city.textContent() ?? '';
-  info.licensePlate = +(await licensePlate.textContent() ?? '0')[2];
-  info.transmission = await transmission.textContent() ?? '';
-  info.fuel = await fuel.textContent() ?? '';
-  info.cylinderCapacity = +(await cylinderCapacity.textContent() ?? '0')
-    .replaceAll('.', '')
-    .trim();
-  info.color = (await color.textContent() ?? '').toLowerCase();
-
-  return info;
+  return buildCarObj({
+    brand: brand ? await brand.textContent() : null,
+    model: model ? await model.textContent() : null,
+    price: price ? (await price.textContent() ?? '').replace('$', '') : null,
+    km: km ? (await km.textContent() ?? '').replace('km', '') : null,
+    year: year ? await year.textContent() : null,
+    status: status ? await status.textContent() : null,
+    city: city ? await city.textContent() : null,
+    licensePlate: licensePlate ? (await licensePlate.textContent() ?? '0')[2] : null,
+    transmission: transmission ? await transmission.textContent() : null,
+    fuel: fuel ? await fuel.textContent() : null,
+    cylinderCapacity: cylinderCapacity ? (await cylinderCapacity.textContent() ?? '0') : null,
+    color: color ? (await color.textContent() ?? '').toLowerCase() : null,
+    link: carUrl,
+    site: 'carro-ya',
+  });
 }
 
 async function carroYa(browser: Browser) {
@@ -121,7 +93,7 @@ async function carroYa(browser: Browser) {
     carsData.push(car);
   }
 
-  await saveFile(carsData);
+  return carsData;
 }
 
 export default carroYa;
