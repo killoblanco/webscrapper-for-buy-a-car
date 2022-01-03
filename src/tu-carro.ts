@@ -24,7 +24,7 @@ async function getCarInfo(page: Page, carUrl: string) {
   const [city] = await page.$$('.ui-seller-info__status-info:nth-child(2) p');
 
   const [
-    brand, _, year, color, fuel, transmission, cylinderCapacity, km,
+    brand, _, year, color, fuel, cylinderCapacity, transmission, km,
   ] = await page.$$('table td span');
 
   return buildCarObj({
