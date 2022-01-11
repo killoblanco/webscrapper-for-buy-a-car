@@ -3,7 +3,7 @@ import { buildCarObj, cleanDetailsLinks } from './utils';
 
 async function getPageLinks(baseUrl: string, searchUrl: string, page: Page) {
   const fullUrl = baseUrl + searchUrl;
-  await page.goto(fullUrl, { waitUntil: 'networkidle' });
+  await page.goto(fullUrl, { waitUntil: 'networkidle', timeout: 0 });
 
   const [totalPages] = await page.$$('ul.ant-pagination li:nth-last-child(2) a');
   const totalPagesNumber = await totalPages.textContent() ?? '1';
@@ -13,7 +13,7 @@ async function getPageLinks(baseUrl: string, searchUrl: string, page: Page) {
 
 async function getDetailsLinks(page: Page, link: string) {
   const details = [];
-  await page.goto(link, { waitUntil: 'networkidle' });
+  await page.goto(link, { waitUntil: 'networkidle', timeout: 0  });
   const items = await page.$$('.contentCurrentCard a:not(#whatsappLink)');
 
   for (const item of items) {
@@ -25,7 +25,7 @@ async function getDetailsLinks(page: Page, link: string) {
 }
 
 async function getCarInfo(page: Page, carUrl: string) {
-  await page.goto(carUrl, { waitUntil: 'networkidle' });
+  await page.goto(carUrl, { waitUntil: 'networkidle', timeout: 0  });
 
   const [brand] = await page.$$('h1.title');
   const [model] = await page.$$('h3.h3P');
