@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import autocosmos from './autocosmos';
 import carroYa from './carro-ya';
 import tuCarro from './tu-carro';
 import { saveFile } from './utils';
@@ -16,6 +17,7 @@ async function searchCar() {
   console.log('Browser lauched');
   scrappedData.push(...(await carroYa(browser)));
   scrappedData.push(...(await tuCarro(browser)));
+  scrappedData.push(...(await autocosmos(browser)));
 
   await browser.close();
   console.log('Browser closed');
