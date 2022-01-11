@@ -2,7 +2,7 @@ import { Browser, Page } from 'playwright';
 import { buildCarObj, cleanDetailsLinks } from './utils';
 
 async function scrapeDetails(page: Page, url: string, list: string[]) {
-  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.goto(url, { waitUntil: 'networkidle', timeout: 0  });
   const items = await page.$$('a.ui-search-result__content');
   for (const item of items) {
     const link = await item.getProperty('href');
@@ -17,7 +17,7 @@ async function scrapeDetails(page: Page, url: string, list: string[]) {
 }
 
 async function getCarInfo(page: Page, carUrl: string) {
-  await page.goto(carUrl, { waitUntil: 'networkidle' });
+  await page.goto(carUrl, { waitUntil: 'networkidle', timeout: 0  });
 
   const [price] = await page.$$('.ui-pdp-price__second-line .price-tag-fraction');
   const [model] = await page.$$('h1.ui-pdp-title');
