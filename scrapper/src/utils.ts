@@ -3,7 +3,7 @@ import { writeFile } from 'fs';
 export async function saveFile(data: {}[]) {
   const parsedData = JSON.stringify(data);
   await writeFile(
-    `./data/${Date.now()}.json`,
+    `../data/${Date.now()}.json`,
     parsedData,
     (err) => {
       if (err) {
