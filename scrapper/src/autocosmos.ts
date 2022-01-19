@@ -30,7 +30,7 @@ async function getCarInfo(page: Page, carUrl: string) {
     const [price] = await page.$$('strong[itemprop=price]');
     const [km] = await page.$$('.car-specifics__extra-info p span[itemprop=mileageFromOdometer]');
     const [year] = await page.$$('.car-specifics__extra-info span[itemprop=modelDate]');
-    const [city] = await page.$$('strong[itemprop=addressLocality]');
+    // const [city] = await page.$$('strong[itemprop=addressLocality]');
 
     const [engine, _1, performance] = await page.$$('table.ficha');
 
@@ -43,15 +43,11 @@ async function getCarInfo(page: Page, carUrl: string) {
       price: price ? (await price.textContent() ?? '').replace('$', '') : null,
       km: km ? (await km.textContent() ?? '').replace('km', '') : null,
       year: year ? await year.textContent() : null,
-      status: 'usado',
-      city: city ? await city.textContent() : null,
-      licensePlate: null,
       transmission: transmission ? await transmission.textContent() : null,
       fuel: fuel ? await fuel.textContent() : null,
       cylinderCapacity: cylinderCapacity ? (await cylinderCapacity.textContent() ?? '0') : null,
       color: null,
       link: carUrl,
-      site: 'autocosmos',
     });
   } else {
     return {};
@@ -62,9 +58,10 @@ async function autocosmos(browser: Browser) {
   const page = await browser.newPage();
   const baseUrl = 'https://www.autocosmos.com.co/auto/listado';
   const brands = [
-    { url: '/nissan?pr=375', keywords: ['kicks', 'sentra', 'versa'] },
-    { url: '/chevrolet?pr=375', keywords: ['onix'] },
-    { url: '/toyota?pr=375', keywords: ['corolla'] },
+    { url: '/nissan?pr=375', keywords: ['kicks'] },
+    // { url: '/nissan?pr=375', keywords: ['kicks', 'sentra', 'versa'] },
+    // { url: '/chevrolet?pr=375', keywords: ['onix'] },
+    // { url: '/toyota?pr=375', keywords: ['corolla'] },
   ];
 
   const validLinks: string[] = [];

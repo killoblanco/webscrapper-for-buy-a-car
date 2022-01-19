@@ -25,15 +25,11 @@ export function buildCarObj(carData: {
   price: string | null;
   km: string | null;
   year: string | null;
-  status: string | null;
-  city: string | null;
-  licensePlate: string | null;
   transmission: string | null;
   fuel: string | null;
   cylinderCapacity: string | null;
   color: string | null;
   link: string | null;
-  site: string | null;
 }) {
   return carData;
 }

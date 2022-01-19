@@ -34,7 +34,7 @@ async function getCarInfo(page: Page, carUrl: string) {
   const [year] = await page.$$('h3.year');
 
   const [
-    status, city, licensePlate, transmission,
+    _status, _city, _licensePlate, transmission,
     fuel, cylinderCapacity, color,
   ] = await page.$$('h4.description');
 
@@ -44,15 +44,11 @@ async function getCarInfo(page: Page, carUrl: string) {
     price: price ? (await price.textContent() ?? '').replace('$', '') : null,
     km: km ? (await km.textContent() ?? '').replace('km', '') : null,
     year: year ? await year.textContent() : null,
-    status: status ? await status.textContent() : null,
-    city: city ? await city.textContent() : null,
-    licensePlate: licensePlate ? (await licensePlate.textContent() ?? '0')[2] : null,
     transmission: transmission ? await transmission.textContent() : null,
     fuel: fuel ? await fuel.textContent() : null,
     cylinderCapacity: cylinderCapacity ? (await cylinderCapacity.textContent() ?? '0') : null,
     color: color ? (await color.textContent() ?? '').toLowerCase() : null,
     link: carUrl,
-    site: 'carro-ya',
   });
 }
 
@@ -62,16 +58,20 @@ async function carroYa(browser: Browser) {
   const brands = [
     {
       url: '/resultados/automoviles-y-camionetas/nissan/bogota',
-      keywords: ['kicks', 'sentra', 'versa'],
+      keywords: ['kicks'],
     },
-    {
-      url: '/resultados/automoviles-y-camionetas/chevrolet/bogota',
-      keywords: ['onix'],
-    },
-    {
-      url: '/resultados/automoviles-y-camionetas/toyota/bogota',
-      keywords: ['corolla'],
-    },
+    // {
+    //   url: '/resultados/automoviles-y-camionetas/nissan/bogota',
+    //   keywords: ['kicks', 'sentra', 'versa'],
+    // },
+    // {
+    //   url: '/resultados/automoviles-y-camionetas/chevrolet/bogota',
+    //   keywords: ['onix'],
+    // },
+    // {
+    //   url: '/resultados/automoviles-y-camionetas/toyota/bogota',
+    //   keywords: ['corolla'],
+    // },
   ];
 
   const validLinks: string[] = [];

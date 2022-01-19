@@ -21,7 +21,7 @@ async function getCarInfo(page: Page, carUrl: string) {
 
   const [price] = await page.$$('.ui-pdp-price__second-line .price-tag-fraction');
   const [model] = await page.$$('h1.ui-pdp-title');
-  const [city] = await page.$$('.ui-seller-info__status-info:nth-child(2) p');
+  // const [city] = await page.$$('.ui-seller-info__status-info:nth-child(2) p');
 
   const [
     brand, _, year, color, fuel, cylinderCapacity, transmission, km,
@@ -33,15 +33,11 @@ async function getCarInfo(page: Page, carUrl: string) {
     price: price ? (await price.textContent() ?? '') : null,
     km: km ? (await km.textContent() ?? '').replace('km', '') : null,
     year: year ? await year.textContent() : null,
-    status: 'usado',
-    city: city ? await city.textContent() : null,
-    licensePlate: null,
     transmission: transmission ? await transmission.textContent() : null,
     fuel: fuel ? await fuel.textContent() : null,
     cylinderCapacity: cylinderCapacity ? (await cylinderCapacity.textContent() ?? '0') : null,
     color: color ? (await color.textContent() ?? '').toLowerCase() : null,
     link: carUrl,
-    site: 'tu-carro',
   });
 }
 
@@ -49,9 +45,10 @@ async function tuCarro(browser: Browser) {
   const page = await browser.newPage();
   const baseUrl = 'https://carros.tucarro.com.co';
   const brands = [
-    { url: '/nissan/bogota-dc', keywords: ['kicks', 'sentra', 'versa'] },
-    { url: '/chevrolet/bogota-dc', keywords: ['onix'] },
-    { url: '/toyota/bogota-dc', keywords: ['corolla'] },
+    { url: '/nissan/bogota-dc', keywords: ['kicks'] },
+    // { url: '/nissan/bogota-dc', keywords: ['kicks', 'sentra', 'versa'] },
+    // { url: '/chevrolet/bogota-dc', keywords: ['onix'] },
+    // { url: '/toyota/bogota-dc', keywords: ['corolla'] },
   ];
 
   const validLinks: string[] = [];
